@@ -1,39 +1,45 @@
 const express = require("express");
-const multer  = require('multer')
+const multer = require("multer");
+
 const router = express.Router();
-const storageMulter = require("../../helpers/storageMulter")
-const upload = multer({ storage: storageMulter() })
-
-const controller = require("../../controllers/admin/product.controllers")
-
-const validate = require("../../validates/admin/product.validate")
 
 
-router.get("/", controller.index );
+// const storageMulter = require("../../helpers/storageMulter")
+const upload = multer();
 
-router.patch("/change-status/:status/:id", controller.changeStatus );
+const controller = require("../../controllers/admin/product.controllers");
 
-router.patch("/change-multi", controller.changeMulti );
+const validate = require("../../validates/admin/product.validate");
 
-router.delete("/delete/:id", controller.deleteItem );
+const uploadCloud = require("../../middlewares/admin/uploadCloud.middleware")
 
-router.get("/create", controller.create );
+router.get("/", controller.index);
 
-router.post("/create",
+router.patch("/change-status/:status/:id", controller.changeStatus);
+
+router.patch("/change-multi", controller.changeMulti);
+
+router.delete("/delete/:id", controller.deleteItem);
+
+router.get("/create", controller.create);
+
+router.post(
+  "/create",
   upload.single("thumbnail"),
+  uploadCloud.upload,
   validate.createPost,
-  controller.createPost );
+  controller.createPost
+);
 
-router.get("/edit/:id", controller.edit );
+router.get("/edit/:id", controller.edit);
 
-router.patch("/edit/:id",
+router.patch(
+  "/edit/:id",
   upload.single("thumbnail"),
   validate.createPost,
   controller.editPatch
 );
 
-router.get("/detail/:id", controller.detail );
-
-
+router.get("/detail/:id", controller.detail);
 
 module.exports = router;

@@ -12,7 +12,7 @@ module.exports.index = async (req, res) => {
 
   // đoạn bộ lọc
   const filterStatus = filterStatusHelper(req.query);
-  console.log(filterStatus);
+  // console.log(filterStatus);
 
   let find = {
     deleted: false,
@@ -24,7 +24,7 @@ module.exports.index = async (req, res) => {
 
   // TIm kiem
   const objectSearch = SearchHelper(req.query);
-  console.log(objectSearch);
+  // console.log(objectSearch);
 
   if (objectSearch.regex) {
     find.title = objectSearch.regex;
@@ -173,9 +173,9 @@ module.exports.createPost = async (req, res) => {
     req.body.position = parseInt(req.body.position);
   }
 
-  if (req.file) {
-    req.body.thumbnail = `/uploads/${req.file.filename}`;
-  }
+  // if (req.file) {
+  //   req.body.thumbnail = `/uploads/${req.file.filename}`;
+  // }
 
   const product = new Product(req.body);
   await product.save();
