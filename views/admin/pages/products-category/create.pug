@@ -1,14 +1,15 @@
 extends ../../layouts/default.pug
 include ../../mixins/alert.pug
+include ../../mixins/select-tree.pug
+
 
 block main 
 
   +alert-error(5000)
 
-  h1(class="mb-4") Thêm mới sản phẩm 
+  h1(class="mb-4") Thêm mới danh mục sản phẩm 
 
-  form( action=`${prefixAdmin}/products/create`
-        id="form-create-product"
+  form( action=`${prefixAdmin}/products-category/create`
         method="POST"
         enctype="multipart/form-data"
         )
@@ -22,6 +23,24 @@ block main
         name="title"
         required
       )
+
+    .form-group
+      label(for="parent_id") Danh mục cha
+      //- input(
+      //-   type="text"
+      //-   class="form-control"
+      //-   id="parent_id"
+      //-   name="parent_id"
+      //- )
+
+      select(
+        name="parent_id"
+        id="parent_id"
+        class="form-control"
+      )
+        option(value="") --Chọn danh mục cha --
+        if(records) 
+          +select-tree(records)
     
     .form-group
       label(for="desc") Mô tả
@@ -32,40 +51,8 @@ block main
         rows="5"
       )
 
-    .form-group
-      label(for="price") Giá
-      input(
-        type="number"
-        class="form-control"
-        id="price"
-        name="price"
-        value="0"
-        min="0"
-      )
-    
-    .form-group
-      label(for="discount") % Giảm giá
-      input(
-        type="number"
-        class="form-control"
-        id="discount"
-        name="discountPercentage"
-        value="0"
-        min="0"
-      )
-    
-    .form-group
-      label(for="stock") Số lượng
-      input(
-        type="number"
-        class="form-control"
-        id="stock"
-        name="stock"
-        value="1"
-      )
-    
     div(class="form-group"
-          upload-image
+        upload-image
     )
       label(for="thumbnail") Ảnh
       input(
@@ -120,5 +107,3 @@ block main
     
     .form-group.mt-3
       button.btn.btn-primary(type="submit") Lưu
-
-  script(src="/admin/js/product.js")
