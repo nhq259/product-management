@@ -4,12 +4,12 @@ include ../../mixins/select-tree.pug
 
 
 block main 
-  if(role.permissions.includes("products-category_create"))
+  if(role.permissions.includes("products-category_edit"))
     +alert-error(5000)
 
-    h1(class="mb-4") Thêm mới danh mục sản phẩm 
+    h1(class="mb-4") Chỉnh sửa danh mục sản phẩm 
 
-    form( action=`${prefixAdmin}/products-category/create`
+    form( action=`${prefixAdmin}/products-category/edit/${data.id}?_method=PATCH`
           method="POST"
           enctype="multipart/form-data"
           )
@@ -22,6 +22,7 @@ block main
           id="title"
           name="title"
           required
+          value=data.title
         )
 
       .form-group
@@ -33,7 +34,7 @@ block main
         )
           option(value="") --Chọn danh mục cha --
           if(records) 
-            +select-tree(records)
+            +select-tree(records, 1 , data.parent_id)
       
       .form-group
         label(for="desc") Mô tả
@@ -42,7 +43,7 @@ block main
           id="desc"
           name="description"
           rows="5"
-        )
+        ) #{data.description}
 
       div(class="form-group"
           upload-image
@@ -57,7 +58,7 @@ block main
           upload-image-input
         )
         img(
-          src=""
+          src=data.thumbnail
           upload-image-preview
           class="image-preview"
         )
@@ -74,6 +75,7 @@ block main
           name="position"
           placeholder="Tự động tăng"
           min="1"
+          value=data.position
         )
 
       .form-group      
@@ -84,7 +86,7 @@ block main
             id="statusActive"
             name="status"
             value="active"
-            checked
+            checked=(data.status == "active" ? true : false)
           )
           label(for="statusActive" class="form-check-label") Hoạt động
         
@@ -95,8 +97,9 @@ block main
             id="statusInactive"
             name="status"
             value="inactive"
+            checked=(data.status == "inactive" ? true : false)
           )
           label(for="statusInactive" class="form-check-label") Dừng hoạt động
       
       .form-group.mt-3
-        button.btn.btn-primary(type="submit") Lưu
+        button.btn.btn-primary(type="submit") Cập nhật
