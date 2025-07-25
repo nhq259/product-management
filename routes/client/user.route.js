@@ -4,6 +4,9 @@ const router = express.Router();
 const controller = require("../../controllers/client/user.controllers")
 const validate = require("../../validates/client/user.validate")
 
+const authMiddleware = require("../../middlewares/client/auth.middleware")
+
+
 
 router.get("/register", controller.register );
 router.post("/register",validate.registerPost, controller.registerPost );
@@ -21,6 +24,16 @@ router.post("/password/otp",controller.otpPasswordPost );
 
 router.get("/password/reset",controller.resetPassword );
 router.post("/password/reset",validate.resetPasswordPost,controller.resetPasswordPost );
+
+router.get("/info",authMiddleware.requireAuth, controller.info );
+
+router.get("/edit/:id",authMiddleware.requireAuth, controller.edit );
+router.patch("/edit/:id",authMiddleware.requireAuth, controller.editPatch );
+
+router.get("/password/change/:id",authMiddleware.requireAuth,controller.changePassword );
+router.patch("/password/change/:id",authMiddleware.requireAuth,validate.changePasswordPatch,controller.changePasswordPatch );
+
+
 
 
 

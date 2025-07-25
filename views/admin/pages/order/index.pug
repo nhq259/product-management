@@ -1,0 +1,57 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  if(role.permissions.includes("orders_view"))
+    +alert-success(5000)
+
+    h1 Quản lý đơn hàng
+
+    .card.mb-3
+      .card-header
+        .card-body
+          .row  
+            .col-8
+              // Bạn có thể thêm ô tìm kiếm tại đây
+          table.table.table-bordered.table-striped
+            thead
+              tr
+                th STT
+                th Thông tin khách hàng
+                th Sản phẩm
+                th Tổng tiền
+                th Ngày tạo
+                th Hành động
+            tbody
+              each order, index in orders
+                tr
+                  td #{index + 1}
+                  td
+                    | Họ tên: <b> #{order.userInfo.fullName} </b>
+                    br
+                    | SĐT:<b> #{order.userInfo.phone}</b>
+                    br
+                    | Địa chỉ:<b> #{order.userInfo.address}</b>
+                  td
+                    ul
+                      each product in order.products
+                        li
+                          |<b> #{product.productName}</b> - Số lượng:<b> #{product.quantity}</b> - Giá sau giảm: <b>#{product.priceNew.toLocaleString()} $</b>
+                  td
+                    - const total = order.products.reduce((sum, p) => sum + (p.priceNew * p.quantity), 0)
+                    |<b> #{total.toLocaleString()} $   </b>
+                  td #{new Date(order.createdAt).toLocaleDateString()}
+                  td
+                    a.btn.btn-sm.btn-info(href=`${prefixAdmin}/orders/detail/${order._id}`) Chi tiết
+
+                    if(role.permissions.includes("orders_delete"))                     
+                      button(class="btn btn-danger btn-sm ml-1"
+                        button-delete
+                        data-id=order.id
+                      ) Xóa
+    form(action=""
+      method="POST"
+      id="form-delete-order"
+      data-path=`${prefixAdmin}/orders/delete`
+    )
+    script(src="/admin/js/order.js")

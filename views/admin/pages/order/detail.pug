@@ -1,0 +1,46 @@
+extends ../../layouts/default.pug
+
+block main 
+  h1.mb-4 Chi tiết đơn hàng
+
+  // Thông tin khách hàng
+  if order.userInfo
+    h3.mb-2 Thông tin khách hàng
+    div.mb-2 Họ tên: <b>#{order.userInfo.fullName}</b>
+    div.mb-2 SĐT: <b>#{order.userInfo.phone}</b>
+    div.mb-4 Địa chỉ: <b>#{order.userInfo.address}</b>
+
+  // Danh sách sản phẩm
+  if order.products && order.products.length > 0
+    h3.mb-2 Sản phẩm đã đặt
+    table.table.table-bordered
+      thead
+        tr
+          th Ảnh
+          th Tên sản phẩm
+          th Đơn giá (sau giảm)
+          th Số lượng
+          th Thành tiền
+      tbody
+        each product in order.products
+          tr
+            td
+              if product.thumbnail
+                img(src=product.thumbnail, style="width: 80px; height: auto")
+              else
+                span Không có ảnh
+            td #{product.productName}
+            td #{product.priceNew.toLocaleString()} $
+            td #{product.quantity}
+            - const subtotal = product.priceNew * product.quantity
+            td #{subtotal.toLocaleString()} $
+
+    // Tổng tiền
+    - const total = order.products.reduce((sum, p) => sum + (p.priceNew * p.quantity), 0)
+    div.mt-4 Tổng tiền: 
+      b #{total.toLocaleString()} $
+
+  // Thời gian tạo
+  if order.createdAt
+    div.mt-3 Ngày đặt hàng: 
+      b #{new Date(order.createdAt).toLocaleDateString()}

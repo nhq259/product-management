@@ -1,0 +1,32 @@
+extends ../../layouts/default.pug
+
+block main 
+  if (user.fullName)
+    h1(class="mb-4") #{user.fullName}
+
+
+  if (user.email)
+    div(class="mb-4") <b> Email : </b> #{user.email}
+
+  if (user.phone)
+    div(class="mb-4") <b>Số điện thoại :</b> #{user.phone}
+  if (user.avatar)
+    div(class="mb-4")
+      img(
+        src=user.avatar
+        style="width: 100px"
+      )
+  if (user.status)
+    div(class="mb-4")
+      b Trạng thái:
+      if (user.status === "active")
+        span(class="badge badge-success") Hoạt động
+      else
+        span(class="badge badge-danger") Dừng Hoạt động
+
+  if(role.permissions.includes("users_edit"))
+    a(
+      href=`${prefixAdmin}/users/edit/${user.id}`
+        class="btn btn-warning"
+        ) Chỉnh sửa
+

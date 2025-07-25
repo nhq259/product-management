@@ -78,3 +78,35 @@ module.exports.resetPasswordPost = (req, res, next) => {
 
   next();
 };
+
+module.exports.changePasswordPatch = (req, res, next) => {
+  if (!req.body.oldPassword) {
+    req.flash("error", `Vui lòng nhập mật khẩu !`);
+
+    res.redirect("back"); // express, chuyển hướng về trang...
+    return;
+  }
+
+  if (!req.body.newPassword) {
+    req.flash("error", `Vui lòng nhập mật khẩu mới !`);
+
+    res.redirect("back"); // express, chuyển hướng về trang...
+    return;
+  }
+
+  if (!req.body.confirmPassword) {
+    req.flash("error", `Vui lòng xác nhận mật khẩu mới !`);
+
+    res.redirect("back"); // express, chuyển hướng về trang...
+    return;
+  }
+
+  if (req.body.confirmPassword != req.body.newPassword) {
+    req.flash("error", `Mật khẩu mới nhập không trùng khớp !`);
+
+    res.redirect("back"); // express, chuyển hướng về trang...
+    return;
+  }
+
+  next();
+};

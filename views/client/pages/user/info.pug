@@ -1,0 +1,33 @@
+extends ../../layouts/default.pug
+include ../../mixins/alert.pug
+
+block main
+  +alert-error(5000)
+
+  .container.my-5
+    .row.justify-content-center
+      .col-8
+        h1.text-center Thông tin tài khoản
+
+        .card.shadow.p-4.rounded
+          dl
+            dt Họ và tên:
+            dd #{infoUser.fullName}
+
+            dt Email:
+            dd #{infoUser.email}
+
+            dt Trạng thái:
+            dd
+              if infoUser.status === 'active'
+                span.text-success Đang hoạt động
+              else
+                span.text-danger Không hoạt động
+
+          a(
+            href=`/user/edit/${infoUser.id}`
+            class="btn btn-warning btn-sm mr-2"
+            ) Sửa
+          a(href=`/user/password/change/${infoUser.id}`) Đổi mật khẩu
+          
+

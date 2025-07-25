@@ -10,6 +10,9 @@
       if(role.permissions.includes("products_view"))
         li
           a(href=`${prefixAdmin}/products`) Danh sách sản phẩm
+      if(role.permissions.includes("orders_view"))
+        li
+          a(href=`${prefixAdmin}/orders`) Danh sách đơn hàng
 
       if(role.permissions.includes("roles_view"))
         li
@@ -22,3 +25,11 @@
       if(role.permissions.includes("accounts_view"))
         li
           a(href=`${prefixAdmin}/accounts`) Danh sách tài khoản
+
+      if(role.permissions.includes("users_view"))
+        li
+          a(href=`${prefixAdmin}/users`) Danh sách người dùng
+
+      if(role.permissions.includes("settings"))
+        li
+          a(href=`${prefixAdmin}/settings/general`) Cài đặt chung
