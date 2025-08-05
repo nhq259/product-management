@@ -7,6 +7,10 @@ html
 
     link(rel="stylesheet", href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css")
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    //- file upload preview
+    //- <link rel="stylesheet" type="text/css" href="https://unpkg.com/file-upload-with-preview/dist/style.css"/>
+    
 
     link(rel="stylesheet", href="/css/style.css")
   body 
@@ -21,7 +25,22 @@ html
     script(src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js")
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js")
 
+    //- SocketIO
+    script(src="/socket.io/socket.io.js") 
+    script(src="/js/socket.js") 
+
+    //- emojo-picker-element
+    script( type="module" src="https://cdn.jsdelivr.net/npm/emoji-picker-element@^1/index.js") 
+    //- end emojo-picker-element
+
+    //- file upload preview
+    //- <script src="https://unpkg.com/file-upload-with-preview/dist/index.js"></script> 
     
 
-  script(src="/js/script.js")
+    //- script(type="module" src="/js/chat.js") 
+    //- script(src="/js/users.js")
+
+    script(src="/js/script.js")
+
+    block script 
 

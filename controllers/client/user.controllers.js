@@ -81,7 +81,7 @@ module.exports.loginPost = async (req, res) => {
   });
 
   if (cart) {
-  res.cookie("cartId", cart.id);
+    res.cookie("cartId", cart.id);
   } else {
     await Cart.updateOne(
       {
@@ -95,13 +95,46 @@ module.exports.loginPost = async (req, res) => {
 
   res.cookie("tokenUser", user.tokenUser);
 
+  await User.updateOne(
+    {
+      tokenUser: user.tokenUser,
+    },
+    {
+      statusOnline: "online",
+    }
+  );
+
+  _io.once("connection", (socket) => {
+    socket.broadcast.emit("SERVER_RETURN_USER_STATUS_ONLINE", {
+      userId : user.id,
+      status: "online"
+    });
+  });
+
   res.redirect("/");
 };
 
 // [GET] /user/logout
 module.exports.logout = async (req, res) => {
+  await User.updateOne(
+    {
+      tokenUser: req.cookies.tokenUser,
+    },
+    {
+      statusOnline: "offline",
+    }
+  );
+
+    _io.once("connection", (socket) => {
+    socket.broadcast.emit("SERVER_RETURN_USER_STATUS_ONLINE", {
+      userId : res.locals.user.id,
+      status: "offline"
+    });
+  });
+
   res.clearCookie("tokenUser");
   res.clearCookie("cartId");
+
   res.redirect("/");
 };
 
@@ -234,69 +267,63 @@ module.exports.info = async (req, res) => {
 // [GET] /user/edit/:id
 module.exports.edit = async (req, res) => {
   try {
-  const find = {
-    deleted : false,
-    _id : req.params.id
-  }
+    const find = {
+      deleted: false,
+      _id: req.params.id,
+    };
 
-  const user = await User.findOne(find).select("fullName email");
-  // console.log(user);
-  
-  
-  res.render("client/pages/user/edit", {
-    pageTitle: "Chỉnh sửa thông tin cá nhân",
-    user: user
+    const user = await User.findOne(find).select("fullName email");
+    // console.log(user);
 
-  });
+    res.render("client/pages/user/edit", {
+      pageTitle: "Chỉnh sửa thông tin cá nhân",
+      user: user,
+    });
   } catch (error) {
-
     res.redirect(`/user/info`);
   }
 };
 
 // [PATCH] /user/edit/:id
 module.exports.editPatch = async (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
 
-// console.log(req.body, id);
+  // console.log(req.body, id);
 
   try {
-
-    await User.updateOne({_id: id},{
-      ...req.body,
-    });
+    await User.updateOne(
+      { _id: id },
+      {
+        ...req.body,
+      }
+    );
     req.flash("success", `Đã cập nhật thông tin thành công !`);
-
   } catch (error) {
     req.flash("error", `Đã cập nhật thông tin thất bại !`);
-
   }
 
   res.redirect("back");
-
-
-  
 };
 
 // [GET] /user/password/change/:id
 module.exports.changePassword = async (req, res) => {
-  const id = req.params.id
+  const id = req.params.id;
   res.render("client/pages/user/change-password.pug", {
     pageTitle: "Đổi mật khẩu",
-    id:id
+    id: id,
   });
 };
 
 // [PATCH] /user/password/change/:id
 module.exports.changePasswordPatch = async (req, res) => {
-  const id = req.params.id
-const { oldPassword, newPassword, confirmPassword } = req.body;
+  const id = req.params.id;
+  const { oldPassword, newPassword, confirmPassword } = req.body;
 
-// console.log(req.body, id);
+  // console.log(req.body, id);
 
   try {
     const user = await User.findById(id);
-    
+
     if (!user) {
       req.flash("error", "Người dùng không tồn tại.");
       return res.redirect("back");
@@ -324,6 +351,4 @@ const { oldPassword, newPassword, confirmPassword } = req.body;
     req.flash("error", "Có lỗi xảy ra khi đổi mật khẩu.");
     return res.redirect("back");
   }
-
-  
 };

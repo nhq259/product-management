@@ -768,7 +768,7 @@ img {
   background: #fff;
   display: flex;
   flex-direction: column;
-  height: 90vh; /* chiếm 90% chiều cao màn hình */
+  /* height: 90vh; chiếm 90% chiều cao màn hình */
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
@@ -855,5 +855,213 @@ img {
   pointer-events: none;
 }
 
+.chat .inner-body{
+  padding: 10px;
+  max-height: 450px;
+  overflow-y: auto;
+}
 
 /* End chat */
+
+/* Emoji-Icon */
+.tooltip {
+  visibility: hidden;
+    }
+.tooltip.shown {
+  visibility: visible;
+  opacity: 1;
+    }
+/*End Emoji-Icon */
+
+/* box-typing */
+.box-typing {
+  position: relative;
+}
+
+.box-typing .inner-dots {
+  position: relative;
+  height: 20px;
+  width: 58px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #fefefe;
+  border-radius: 45px;
+  margin-top: 2px;
+}
+
+.box-typing .inner-dots span {
+  animation: blink 1.5s infinite;
+  height: 5px;
+  width: 5px;
+  background: #252525;
+  border-radius: 50%;
+  display: inline-block;
+  margin: 0 3px;
+}
+
+.box-typing .inner-dots span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.box-typing .inner-dots span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes blink {
+  0% {
+    opacity: 0.1;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.1;
+  }
+}
+/* End box-typing */
+
+/* CSS box-user */
+.box-user {
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.box-user .inner-avatar {
+  flex-shrink: 0;
+}
+
+.box-user .inner-avatar img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #e9ecef;
+}
+
+.box-user .inner-info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.box-user .inner-name {
+  font-weight: 500;
+  font-size: 16px;
+  color: #333;
+  margin-right: 15px;
+}
+
+.box-user .inner-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.box-user .inner-buttons .btn {
+  font-size: 14px;
+  padding: 6px 12px;
+  border-radius: 4px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.box-user .inner-buttons .btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.box-user .inner-buttons .btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.box-user .inner-buttons .btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.box-user .inner-buttons .btn-secondary:hover {
+  background-color: #545b62;
+}
+
+/* Media query cho responsive */
+@media (max-width: 576px) {
+  .box-user {
+    flex-direction: column;
+    text-align: center;
+  }
+  
+  .box-user .inner-info {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .box-user .inner-name {
+    margin-right: 0;
+    margin-bottom: 8px;
+  }
+}
+
+/* CSS cho các trạng thái button */
+.box-user [btn-cancel-friend] {
+  display: none;
+}
+
+.box-user.add [btn-add-friend] {
+  display: none;
+}
+
+.box-user.add [btn-cancel-friend] {
+  display: inline-block;
+}
+
+.box-user [btn-deleted-friend] {
+  display: none;
+}
+
+.box-user.refuse [btn-accept-friend] {
+  display: none;
+}
+
+.box-user.refuse [btn-refuse-friend] {
+  display: none;
+}
+
+.box-user.refuse [btn-deleted-friend] {
+  display: inline-block;
+}
+
+.box-user [btn-accepted-friend] {
+  display: none;
+}
+
+.box-user.accepted [btn-accept-friend] {
+  display: none;
+}
+
+.box-user.accepted [btn-refuse-friend] {
+  display: none;
+}
+
+.box-user.accepted [btn-accepted-friend] {
+  display: inline-block;
+}
+
+.box-user .inner-status{
+  font-size: 12px;
+  color: green;
+  opacity: 0;
+}
+.box-user .inner-status[status="online"]{
+  opacity: 1;
+}
+/* End-box user */

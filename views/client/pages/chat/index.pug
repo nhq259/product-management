@@ -5,40 +5,36 @@ include ../../mixins/box-head.pug
 block main
   
   .container.my-3
+    include ../../partials/list-btn-users.pug
+
+
     .row
       .col-12
         +box-head("Chat")
 
       .col-12
-        .chat
+        .chat(my-id=user.id)
           //- .inner-head
           //-   .inner-avatar EY
           //-   .inner-name Em Yêu
 
           .inner-body
-            .inner-incoming
-              .inner-name Em Yêu
-              .inner-content-chat
-                | A ơi sang nhà em nha, nhà em không có ai ở nhà cả
+            each chat in chats
+              div(class=(chat.user_id == user.id ? "inner-outgoing" : "inner-incoming"))
+                if(chat.user_id != user.id)
+                  .inner-name #{chat.infoUser.fullName}
+                .inner-content-chat
+                  | #{chat.content}
 
-            .inner-outgoing
-              .inner-content-chat
-                | Thế à? Ok em iu
+            div(class="inner-list-typing")
+              div(class="box-typing")
+                //- div(class="inner-name") Le Van A
+                //- div(class="inner-dots")
+                //-   span
+                //-   span
+                //-   span
 
-            .inner-incoming
-              .inner-name Em Yêu
-              .inner-content-chat
-                | Nhanh nha nhanh nha
-
-            .inner-outgoing
-              .inner-content-chat
-                | Chồng đến rồi mà thấy ai ở nhà đâu em? Khóa cửa mà :(
-
-            .inner-incoming
-              .inner-name Em Yêu
-              .inner-content-chat
-                | Thì em bảo nhà em không ai ở nhà mà :))
-
+          
           .inner-foot
             form(class="inner-form", action="")
               input(
@@ -46,5 +42,16 @@ block main
                 placeholder="Nhập nội dung..."
                 name="content"
               )
+
+              //- <div class="custom-file-container" data-upload-id="upload-images"></div>
+              //- div(class="lable-container")
+              //- lable(class="input-container")
+
+              span(class="button-icon btn btn-light mx-2") <i class="fa-regular fa-face-smile"></i>
               button
                 i.fa-solid.fa-paper-plane
+    div(class="tooltip" role="tooltip")
+      emoji-picker(class="light")
+    
+block script 
+  script(type="module" src="/js/chat.js") 
